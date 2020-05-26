@@ -8,12 +8,13 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
 @SpringBootApplication
-public class TestSpringDataRedisApplication {
+public class SpringDataRedisApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TestSpringDataRedisApplication.class, args);
+		SpringApplication.run(SpringDataRedisApplication.class, args);
 	}
 
+    // jedis, lettuce 두 종류의 클라이언트가 존재한다.
     @Bean
     JedisConnectionFactory jedisConnectionFactory() {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();

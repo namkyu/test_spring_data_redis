@@ -1,5 +1,6 @@
-package com.example.nklee;
+package com.example.nklee.repository;
 
+import com.example.nklee.entity.Person;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,5 +11,5 @@ import org.springframework.stereotype.Repository;
  * @Description :
  */
 @Repository
-public interface StudentRepository extends CrudRepository<Student, String> {
+public interface PersonRepository extends CrudRepository<Person, String> {
 }

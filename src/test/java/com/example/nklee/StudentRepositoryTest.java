@@ -1,20 +1,13 @@
 package com.example.nklee;
 
 
+import com.example.nklee.entity.Student;
+import com.example.nklee.repository.StudentRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.redis.connection.RedisConnection;
-import org.springframework.data.redis.core.RedisCallback;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -57,7 +50,6 @@ public class StudentRepositoryTest {
         Student student2 = new Student("20200522_2", "nklee2", Student.Gender.MALE, 2);
         studentRepository.save(student1);
         studentRepository.save(student2);
-
         studentRepository.findAll().forEach(System.out::println);
     }
 
