@@ -2,7 +2,9 @@ package com.example.nklee;
 
 import com.example.nklee.entity.Account;
 import com.example.nklee.entity.Customer;
+import com.example.nklee.entity.RedisTimeToLive;
 import com.example.nklee.repository.CustomerRepository;
+import com.example.nklee.repository.RedisTimeToLiveRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,14 +29,23 @@ public class RedisCustomerRepositoryTest {
     @Autowired
     CustomerRepository repository;
 
+    @Autowired
+    RedisTimeToLiveRepository redisTimeToLiveRepository;
+
     @Test
     public void testAdd() {
         Customer customer = new Customer(1L, "80010121098", "John Smith");
-        customer.addAccount(new Account(1L, "1234567890", 2000));
-        customer.addAccount(new Account(2L, "1234567891", 4000));
-        customer.addAccount(new Account(3L, "1234567892", 6000));
+        customer.addAccount(new Account(1L, "1234567890", 2000, 10L));
+        customer.addAccount(new Account(2L, "1234567891", 4000, 10L));
+        customer.addAccount(new Account(3L, "1234567892", 6000, 10L));
         customer = repository.save(customer);
         Assert.assertNotNull(customer);
+    }
+
+    @Test
+    public void testTTL() {
+        RedisTimeToLive redisTimeToLive = new RedisTimeToLive(1L, 20L);
+        redisTimeToLiveRepository.save(redisTimeToLive);
     }
 
     @Test

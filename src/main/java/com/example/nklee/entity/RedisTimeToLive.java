@@ -2,26 +2,20 @@ package com.example.nklee.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
 import org.springframework.data.redis.core.index.Indexed;
 
-/**
- * @Project : test_spring_data_redis
- * @Date : 2020-05-25
- * @Author : nklee
- * @Description :
- */
+
 @Data
 @AllArgsConstructor
-public class Account {
+@RedisHash(value = "ttl")
+public class RedisTimeToLive {
 
-    @Indexed
+    @Id
     private Long id;
 
-    private String number;
-
-    private int balance;
-
     @TimeToLive
-    Long ttl;
+    private Long ttl;
 }
