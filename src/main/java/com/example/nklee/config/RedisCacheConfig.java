@@ -1,4 +1,5 @@
 package com.example.nklee.config;
+
 import com.example.nklee.common.CacheKey;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -14,10 +15,12 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executor;
 
 /**
  * @Project : test_spring_data_redis
@@ -44,15 +47,24 @@ public class RedisCacheConfig {
                 .entryTtl(Duration.ofSeconds(CacheKey.USER_EXPIRE_SEC)));
 
         return RedisCacheManager.RedisCacheManagerBuilder.fromConnectionFactory(jedisConnectionFactory)
-            .cacheDefaults(configuration)
-            .withInitialCacheConfigurations(cacheConfigurations)
-            .build();
+                .cacheDefaults(configuration)
+                .withInitialCacheConfigurations(cacheConfigurations)
+                .build();
+    }
+
+    @Bean
+    public Executor sessionRedisListenerContainerTaskExecutor() {
+        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+        taskExecutor.setThreadNamePrefix("SessionRedisListenerContainerThreadPool-");
+        taskExecutor.setMaxPoolSize(4);
+        return taskExecutor;
     }
 
     @Bean
     public RedisMessageListenerContainer RedisMessageListener(RedisConnectionFactory jedisConnectionFactory) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(jedisConnectionFactory);
+        container.setTaskExecutor(sessionRedisListenerContainerTaskExecutor());
         return container;
     }
 
